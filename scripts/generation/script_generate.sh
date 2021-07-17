@@ -1,8 +1,12 @@
 #!/bin/bash
 
 song_path=$1
-type=deepsaber
+cpt2=$2
+peak_threshold=$3
 
+type=deepsaber  # deepsaber ddc
+
+#ddc_file=$2
 # exp1=block_placement_new_nohumreg
 # cpt1=1220000
 #exp1=test_ddc_block_placment
@@ -13,7 +17,7 @@ exp1=block_placement_ddc2
 cpt1=130000
 
 exp2=block_selection_new2
-cpt2=2150000
+#cpt2=2150000
 #cpt2=1200000
 #cpt2=1450000
 #exp2=test_block_selection
@@ -47,7 +51,7 @@ fi
 
 if [ "$type" = "deepsaber" ]; then
   $py generate_stage1.py --cuda --song_path $song_path --experiment_name $exp1 --checkpoint $cpt1 --bpm 128 \
-    --peak_threshold 0.33 \
+    --peak_threshold ${peak_threshold} \
     --temperature 1.00 | tail -1 | ( read json_file;
     $py generate_stage2.py --cuda --song_path $song_path --json_file $json_file --experiment_name $exp2 --checkpoint $cpt2 --bpm 128 \
         --temperature 1.00 \
